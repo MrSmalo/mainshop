@@ -1,16 +1,29 @@
 var express = require('express');
 var router = express.Router();
+const list = require('./list.json');
+const navbar = require('./navbar.json');
+
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
+router.get('/', function (req, res, next) {
+  const entries = Object.entries(list);
+  res.render('pages/home', { ent: entries, navbar });
+});
 
-  //require to our json object filr
-  const jsonData = require('./navBar.json')
-  // define entries of object
-  const entries = Object.entries(jsonData)
+router.get('/about', function (req, res, next) {
+  res.render('pages/about', { navbar });
+});
 
-  res.render('index', {ent : entries});
+router.get('/contact', function (req, res, next) {
+  res.render('pages/contact', { navbar });
+});
 
+router.get('/product', function (req, res, next) {
+  res.render('pages/product', { navbar });
+});
+
+router.get('/login', function (req, res, next) {
+  res.render('pages/login', { navbar });
 });
 
 module.exports = router;

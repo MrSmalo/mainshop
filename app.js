@@ -3,16 +3,51 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+const bodyParser = require('body-parser');
 
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
+
 var app = express();
+
+
+
+
+var mongoose = require('mongoose');
+var config = require('./config/database');
+main().catch(err => console.log(err));
+
+async function main() {
+  await mongoose.connect(config.database);
+
+  // use `await mongoose.connect('mongodb://user:password@127.0.0.1:27017/test');` if your database has auth enabled
+  console.log('connected to mongodb');
+}
+
+
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+
+
+
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
+
+
+//var pages = require('./routes/pages.js');
+var adminPages = require('./routes/admin_pages');
+
+app.use('/admin', adminPages)
+//app.use('/', pages);
+
+
+
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -24,12 +59,12 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};

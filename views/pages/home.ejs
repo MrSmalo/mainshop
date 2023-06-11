@@ -1,0 +1,29 @@
+<head>
+    <%- include('../common/head')%>
+</head>
+
+<body>
+    <header>
+        <%- include('../common/header', { links: navbar.links }) %>
+    </header>
+    <main>
+        <div class="container">
+            <div class="inside"></div>
+            <h2>this is home page</h2>
+            <ul>
+                <% ent.forEach(e=> { %>
+                    <li>
+                        <%= e[0] %> : <%= e[1] %>
+                    </li>
+                    <% }) %>
+            </ul>
+            <p>this is home body</p>
+            <%- include('../common/main')%>
+        </div>
+    </main>
+    <footer>
+        <%- include('../common/footer')%>
+    </footer>
+</body>
+
+</html>
