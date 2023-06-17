@@ -3,12 +3,20 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+const DBconnection = require('./config/DBconnection');
+const dotenv = require('dotenv').config();
 
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
 var app = express();
+
+//connecting to mongo db, exit the program if failed 
+DBconnection().catch(err => {
+  console.log(err)
+  process.exit(1);
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
