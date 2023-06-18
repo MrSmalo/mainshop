@@ -3,7 +3,8 @@ const mongoose = require('mongoose');
 const ProductsSchema = mongoose.Schema({
     name: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     price: {
         type: Number,
@@ -12,8 +13,8 @@ const ProductsSchema = mongoose.Schema({
     description: {
         type: String
     },
-    // category: 
-    //     [{type: mongoose.Schema.Types.ObjectId, ref: Category}]
+    categories: 
+         [{type: mongoose.Schema.Types.ObjectId, ref: 'Categories'}],
     
 },{
     timestamps: true,
