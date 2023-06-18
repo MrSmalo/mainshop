@@ -1,12 +1,13 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
     <a class="navbar-brand" href="/" style="margin-left: 20px;">Website</a>
+
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
         aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
+
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
-
             <% links.forEach(function(link) { %>
                 <li class="nav-item">
                     <a class="nav-link" href="<%= link.url %>">
@@ -17,3 +18,36 @@
         </ul>
     </div>
 </nav>
+
+<style>
+    .cart-container {
+        display: flex;
+        position: fixed;
+        top: 2%;
+        right: 10px;
+        margin-left: 79%;
+        z-index: 9999;
+    }
+
+    .cart-container button {
+        margin-right: 10px;
+    }
+
+    .total-sum-container {
+        position: fixed;
+        top: 10px;
+        left: 44%;
+        opacity: 0.8;
+        max-width: 400px;
+        z-index: 9999;
+    }
+</style>
+
+<div class="container">
+    <div class="cart-container">
+        <button class="btn btn-primary reset-cart">Reset the cart</button>
+        <a class="btn btn-primary" href="/checkout" role="button">Checkout</a>
+    </div>
+</div>
+
+<br><br>

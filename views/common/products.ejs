@@ -1,0 +1,69 @@
+<!-- this file should read the values from the data.json file into li in loop (add a new product to the page after the admin mode) -->
+<br>
+
+<div class="container">
+    <div class="search-container">
+        <form id="searchForm" class="d-flex" action="/search" method="GET">
+            <input type="text" class="form-control me-2" id="searchQuery" placeholder="Search product">
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+    </div>
+
+
+    <script>
+        const searchForm = document.getElementById('searchForm');
+        const searchQuery = document.getElementById('searchQuery');
+        const productEntries = document.querySelectorAll('.entry');
+
+        searchForm.addEventListener('submit', function (event) {
+            event.preventDefault();
+            const query = searchQuery.value.toLowerCase().trim();
+
+        });
+
+
+    </script>
+
+    <br>
+
+    <div class="container">
+        <div class="inside">
+            <% products.forEach((product)=> { %>
+                <div class="entry" data-product-id="<%= product._id %>">
+                    <h5>Name: <%= product.title %>
+                    </h5>
+                    <p>Category: <%= product.category %>
+                    </p>
+                    <p>Description: <%= product.description %>
+                    </p>
+                    <p>Price: $<%= product.price %>
+                    </p>
+                    <img src="<%= product.image %>" alt="Product Image" style="width: 100px; height: 100px;">
+                    <br><br>
+                    <div class="control-btn">
+                        <button class="btn btn-primary decrease-quantity">-</button>
+                        <span class="quantity">0</span>
+                        <button class="btn btn-primary increase-quantity">+</button>
+                    </div>
+                    <div>
+                        <span class="payment">Total: 0$</span>
+                    </div>
+
+                    <a class="btn btn-primary add-to-cart" href="/" role="button" data-product-id="<%= product._id %>"
+                        data-title="<%= product.title %>" data-category="<%= product.category %>"
+                        data-description="<%= product.description %>" data-image="<%= product.image %>"
+                        data-price="<%= product.price %>">Add to cart</a>
+
+                    <!-- <a class="btn btn-primary remove-item" href="/" role="button" data-price="<%= product.price %>">Remove
+                    item</a> -->
+                </div>
+                <% }); %>
+        </div>
+    </div>
+
+</div>
+
+
+
+<%- include('cart-sum')%>
+    <%- include('cart-control')%>

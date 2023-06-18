@@ -1,4 +1,18 @@
 <head>
+    <style>
+        #product-container {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .product-entry {
+            flex: 0 0 200px;
+            height: 200px;
+            border: 1px solid black;
+            margin: 10px;
+        }
+    </style>
+
     <%- include('../common/head')%>
 </head>
 
@@ -11,7 +25,7 @@
     <a href="/" class="btn btn-primary">Back to home page</a>
     <br><br>
 
-    <form method="post" action="/admin/pages/add-page">
+    <form id="product-form" method="post" action="/prod">
 
         <div class="form-group">
             <label for="">Title</label>
@@ -20,32 +34,72 @@
 
         <div class="form-group">
             <label for="">Product Category</label>
-            <input type="text" class="form-control" name="Category" value="" placeholder="Category">
-        </div>
+            <input type="text" class="form-control" name="category" value="" placeholder="Category">
 
-        <div class="form-group">
-            <label for="">Content</label>
-            <textarea name="content" class="form-control" cols="5" rows="5" placeholder="Content"></textarea>
+
         </div>
 
 
         <div class="form-group">
-            <label class="col-md-4 control-label" for="filebutton">Image</label>
-            <div class="col-md-4">
-                <input id="filebutton" name="filebutton" class="input-file" type="file">
-            </div>
+            <label for="">Image URL</label>
+            <input type="text" class="form-control" name="image" value="" placeholder="image">
         </div>
 
+
         <div class="form-group">
-            <label class="col-md-4 control-label" for="singlebutton">Add</label>
+            <label for="">Description</label>
+            <textarea name="description" class="form-control" cols="5" rows="5" placeholder="Content"></textarea>
+        </div>
+
+
+        <div class="form-group">
+            <label for="price">Price</label>
+            <input type="number" class="form-control" name="price" placeholder="Price">
+        </div>
+
+        <br>
+        <div class="form-group">
             <div class="col-md-4">
                 <button id="singlebutton" name="singlebutton" class="btn btn-primary">Add</button>
             </div>
         </div>
     </form>
+
+    <div id="product-container"></div>
 </div>
 
 <br><br><br>
 <footer>
     <%- include('../common/footer')%>
 </footer>
+
+<script>
+
+    $(document).ready(function () {
+        $('#product-form').on('submit', function (event) {
+            event.preventDefault();
+
+            const formData = $(this).serialize(); // take the form data
+
+            $.ajax({
+                url: '/prod',
+                type: 'POST',
+                data: formData,
+                success: function (response) {
+                    alert('The product was uploded');
+
+                },
+                error: function (error) {
+                    console.error('error with adding product', error);
+
+                }
+            });
+            window.location.reload();
+
+        });
+
+    });
+
+
+
+</script>

@@ -9,24 +9,31 @@ const bodyParser = require('body-parser');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
+var adminPages = require('./routes/admin_pages');
+
+
+const mongoose = require("mongoose");
+
+
 
 var app = express();
 
 
 
 
-var mongoose = require('mongoose');
-var config = require('./config/database');
-main().catch(err => console.log(err));
-
-async function main() {
-  await mongoose.connect(config.database);
-
-  // use `await mongoose.connect('mongodb://user:password@127.0.0.1:27017/test');` if your database has auth enabled
-  console.log('connected to mongodb');
-}
+mongoose.connect('mongodb+srv://gutertom2:jrtk0718@cluster0.ywt2upm.mongodb.net/data',
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  }
+);
 
 
+const db = mongoose.connection;
+db.on("error", console.error.bind(console, "connection error: "));
+db.once("open", function () {
+  console.log("Connected to mongodb");
+});
 
 
 // view engine setup
@@ -41,10 +48,10 @@ app.use(bodyParser.json());
 
 
 //var pages = require('./routes/pages.js');
-var adminPages = require('./routes/admin_pages');
 
-app.use('/admin', adminPages)
-//app.use('/', pages);
+
+
+
 
 
 
@@ -58,6 +65,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
+app.use('/admin', adminPages)
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
@@ -73,5 +81,6 @@ app.use(function (err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
 
 module.exports = app;

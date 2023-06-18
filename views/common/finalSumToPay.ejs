@@ -1,0 +1,14 @@
+<% var totalSum=0; %>
+    <% products.forEach((product)=> { %>
+        <br>
+        <div class="sum-none" data-product-id="<%= product._id %>">
+            <script>
+                <!-- <% totalSum=0; %>
+                <% products.forEach((product)=> { %>
+                    <% totalSum +=(product.price) * (product.quantity); %>
+                        <% }); %> -->
+            </script>
+        </div>
+        <% }); %>
+            <h5>Total sum to pay: $<%= totalSum %>
+            </h5>

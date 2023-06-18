@@ -1,0 +1,73 @@
+<head>
+    <%- include('../common/head')%>
+
+        <%- include('../common/homestyle') %>
+</head>
+
+
+<body>
+    <header>
+        <%- include('../common/header', { links: navbar.links }) %>
+    </header>
+
+    <div class="container">
+
+        <%- include('../common/finalSumToPay')%>
+
+            <br>
+    </div>
+    <products>
+        <div class="container">
+            <div class="inside">
+                <% products.forEach((product)=> { %>
+                    <br><br><br>
+                    <div class="entry" data-product-id="<%= product._id %>">
+                        <h5>Name: <%= product.title %>
+                        </h5>
+                        <p>Category: <%= product.category %>
+                        </p>
+                        <p>Description: <%= product.description %>
+                        </p>
+                        <p>Price: $<%= product.price %>
+                        </p>
+                        <p>Quantity: <%= product.quantity %>
+                        </p>
+                        <div>
+                            <span class="payment">Total: $<%= product.quantity * product.price%></span>
+                        </div>
+                        <img src="<%= product.image %>" alt="Product Image" style="width: 100px; height: 100px;">
+                        <br><br>
+                        <a class="btn btn-primary remove-checkout" role="button" data-price="<%= product.price %>"
+                            onclick="removeEntry(this)">Remove item from
+                            cart</a>
+                    </div>
+
+                    <% }); %>
+            </div>
+        </div>
+
+
+        <script>
+            function removeEntry(button) {
+
+                const entryElement = button.closest('.entry');
+                if (entryElement) {
+                    entryElement.style.display = 'none';
+                }
+
+            }
+
+
+        </script>
+
+
+    </products>
+
+    <%- include('../common/cart-control')%>
+        <br><br><br>
+        <footer>
+            <%- include('../common/footer')%>
+        </footer>
+</body>
+
+</html>

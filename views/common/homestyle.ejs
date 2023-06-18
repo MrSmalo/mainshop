@@ -1,0 +1,80 @@
+<!-- more deisign to the each li div that created as one more product is added -->
+<style>
+    .container {
+        margin-bottom: 12px;
+
+    }
+
+    .inside {
+        display: flex;
+        flex-wrap: wrap;
+        margin-top: -4%;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .entry {
+        width: 200px;
+        margin: 10px;
+        border: 1px solid black;
+        padding: 10px;
+        box-sizing: border-box;
+        border-radius: 10px;
+        width: 25%;
+        background-color: #f2f2f2;
+        box-shadow: 0 5px 5px rgba(0, 0, 0, 0.3);
+        transition: all 0.5s ease;
+    }
+
+    .entry:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.6);
+    }
+
+    .control-btn {
+        width: 100px;
+        margin-bottom: 6px;
+        border-radius: 10px;
+        border: 1px solid;
+        padding: 6px;
+        box-shadow: 0 2px 4px rgba(0.5, 0.5, 0.5, 0.2);
+        background-color: #dadada;
+        color: #000000;
+        transition: all 0.3s ease;
+    }
+
+    .control-btn:hover {
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        transform: translateY(-2px);
+
+    }
+
+
+    p {
+        margin-top: -7px;
+        margin-bottom: 0.5rem;
+    }
+
+    a.btn.btn-primary.add-to-cart {
+        width: 100%;
+    }
+
+
+    .sum-none {
+        display: none;
+    }
+
+    .sum {
+        height: 31px;
+        width: 266px;
+    }
+
+
+    .search-container {
+        position: absolute;
+        top: 12%;
+        left: 50%;
+        width: 44%;
+        transform: translateX(-50%);
+    }
+</style>
