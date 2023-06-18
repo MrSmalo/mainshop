@@ -4,11 +4,12 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const bodyParser = require('body-parser');
+const dotenv = require('dotenv').config()
 
+const {adminProtect} = require('./middleware/adminMiddleware')
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-
 var adminPages = require('./routes/admin_pages');
 
 
@@ -21,7 +22,7 @@ var app = express();
 
 
 
-mongoose.connect('mongodb+srv://gutertom2:jrtk0718@cluster0.ywt2upm.mongodb.net/data',
+mongoose.connect('mongodb+srv://admin:ut3ze9qXFnBKwOrm@cluster0.wmokzde.mongodb.net/?retryWrites=true&w=majority',
   {
     useNewUrlParser: true,
     useUnifiedTopology: true
@@ -64,8 +65,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/admin',adminProtect, adminPages)
 
-app.use('/admin', adminPages)
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));

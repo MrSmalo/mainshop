@@ -4,6 +4,7 @@ var router = express.Router();
 const list = require('./list.json');
 const navbar = require('./navbar.json');
 
+
 const mongoose = require('mongoose');
 const Product = require('../models/page');
 const Cart = require('../models/addedPrice');
