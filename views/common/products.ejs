@@ -12,15 +12,39 @@
                         </li>
                         <li class="nav-item2">
                             <a class="nav-link2" href="#" data-category="Candles">Candles</a>
+                            <select class="brand-selector">
+                                <option value="All" disabled selected>Brands List</option>
+                                <option value="A">A</option>
+                                <option value="B">B</option>
+                                <option value="C">C</option>
+                            </select>
                         </li>
                         <li class="nav-item2">
                             <a class="nav-link2" href="#" data-category="Soaps">Soaps</a>
+                            <select class="brand-selector">
+                                <option value="All" disabled selected>Brands List</option>
+                                <option value="D">D</option>
+                                <option value="E">E</option>
+                                <option value="F">F</option>
+                            </select>
                         </li>
                         <li class="nav-item2">
                             <a class="nav-link2" href="#" data-category="Fragrance">Fragrance</a>
+                            <select class="brand-selector">
+                                <option value="All" disabled selected>Brands List</option>
+                                <option value="G">G</option>
+                                <option value="H">H</option>
+                                <option value="I">I</option>
+                            </select>
                         </li>
                         <li class="nav-item2">
                             <a class="nav-link2" href="#" data-category="Mixed">Other</a>
+                            <select class="brand-selector">
+                                <option value="All" disabled selected>Brands List</option>
+                                <option value="J">J</option>
+                                <option value="K">K</option>
+                                <option value="L">L</option>
+                            </select>
                         </li>
                     </ul>
                 </div>
@@ -28,9 +52,10 @@
 
             <div class="container">
                 <div class="price-range-selector">
-                    <label for="price-range-select">Select Price Range:</label>
+                    <label for="price-range-select">Select Price Range</label>
                     <select id="price-range-select">
                         <option value="0">All</option>
+                        <option value="10">Max $5</option>
                         <option value="10">Max $10</option>
                         <option value="20">Max $20</option>
                         <option value="50">Max $50</option>
@@ -57,6 +82,8 @@
                                     <%= product.title %>
                                 </h5>
                                 <p class="product-category">Category: <%= product.category %>
+                                </p>
+                                <p class="product-brand">Brand: <%= product.brand %>
                                 </p>
                                 <p class="product-price">Price: $<%= product.price %>
                                 </p>
@@ -111,15 +138,16 @@
                 const categoryOption = document.querySelectorAll('.nav-link2');
                 const entries = document.querySelectorAll('.entry');
                 const priceRange = document.getElementById('price-range-select');
+                const brandsOption = document.querySelectorAll('.brand-selector');
 
-                categoryOption.forEach((entry) => {
+                categoryOption.forEach((entry) => {  // filter the categories for each click
                     entry.addEventListener('click', (event) => {
                         event.preventDefault();
                         const selectedCategory = entry.getAttribute('data-category');
 
                         entries.forEach((entry) => {
                             entry.style.display = 'block';
-                            const category = entry.querySelector('.product-category').innerText.split(': ')[1];  // take the second key without the ': '
+                            const category = entry.querySelector('.product-category').innerText.split(': ')[1]; // take the second key without the ': '
 
                             if (selectedCategory === 'All' || selectedCategory === category) {
                                 entry.style.display = 'block';
@@ -129,8 +157,26 @@
                             }
                         });
 
+                        priceRange.value = '0'; // set price range selector back to 'All'
 
-                        priceRange.value = '0';  // set price range selector back to 'All'
+                        brandsOption.forEach((selector) => { // to set the brand selector back to All Brands
+                            selector.value = 'All';
+                        });
+                    });
+                });
+
+                brandsOption.forEach((selector) => {
+                    selector.addEventListener('change', () => {
+                        const selectedBrand = selector.value;
+
+                        entries.forEach((entry) => {
+                            entry.style.display = 'block';
+                            const brand = entry.querySelector('.product-brand').innerText.split(': ')[1]; // get the brand value in the second key
+
+                            if (selectedBrand !== 'All' && selectedBrand !== brand) {
+                                entry.style.display = 'none'; // the the nunwanted brands-products
+                            }
+                        });
                     });
                 });
             }
@@ -150,14 +196,14 @@
                             entry.style.display = 'block';
                         }
                         else {
-                            entry.style.display = 'none';
+                            entry.style.display = 'none'; // hide the unwanted products
                         }
                     });
                 });
             }
 
-            filterCategory();
-            filterPrice();
+            filterCategory(); // call the function to filter the categores
+            filterPrice();  // call the function to filter the prices
 
 
         </script>
