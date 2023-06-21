@@ -1,22 +1,23 @@
 const mongoose = require('mongoose')
 
 const userSchema = mongoose.Schema({
-    name:{
+    name: {
         type: String,
         required: true,
         unique: true
     },
-    password:{
+    password: {
         type: String,
         required: true
     },
-    mail:{
+    mail: {
         type: String,
         required: true,
         unique: true
     },
-    order:{
+    order: {
         type: mongoose.Schema.Types.ObjectId,
+        ref: 'Order'
     }
 })
 

@@ -3,14 +3,15 @@
 
         <%- include('../common/homestyle') %>
 </head>
+
 <body>
     <header>
         <%- include('../common/header', { links: navbar.links }) %>
     </header>
 
-    <h1>Hello <%- user.name.toUpperCase()  %></h1>
+    <h1>Hello <%- user.name.toUpperCase() %></h1>
 
-<footer>
-    <%- include('../common/footer') %>
-</footer>
+    <footer>
+        <%- include('../common/footer') %>
+    </footer>
 </body>

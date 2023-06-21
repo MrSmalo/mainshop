@@ -17,6 +17,7 @@ const Price = require('../models/addedPrice');
 
 
 
+
 var cartData = {
   totalSum: 0
 };
@@ -37,14 +38,55 @@ router.post('/prod', async (req, res) => {
 });
 
 
+
+
 // remove product from checkout cart
 router.post('/remove-product-checkout', async (req, res) => {
   const { productId } = req.body;
+
+
   await Cart.findByIdAndRemove(productId);
 
   res.sendStatus(200); // send a confirm status code
 
 });
+
+
+
+
+
+
+
+
+
+// to update in the server the total quantity after each click
+// router.post('/quantity', async (req, res) => {
+//   try {
+//     const { quantity, title } = req.body;
+//     await Product.findOneAndUpdate({ title }, { quantity }, { new: true });
+//     res.sendStatus(200);
+//   }
+//   catch (error) {
+//     res.sendStatus(500);
+//   }
+// });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -97,22 +139,17 @@ router.post('/checkoutSumRemove', async (req, res, next) => {
 
 
 
-
-
-
-
-
-
 // remove all products from checkout cart
 router.post('/remove-all', async (req, res) => {
   try {
-
+    await Product.updateMany({}, { $set: { quantity: 0, payment: 0 } }); // to update all the products to their default values
     await Cart.deleteMany();
 
-    res.status(200).json({ message: 'Product removed successfully' });
-  } catch (error) {
-    console.error('Error removing product', error);
-    res.status(500).json({ error: 'Error removing product' });
+    res.status(200).json({ message: 'product removed' });
+  }
+  catch (error) {
+    console.error('error removing product', error);
+
   }
 });
 
@@ -195,6 +232,9 @@ router.get('/login', function (req, res, next) {
 
 
 
+
+
+
 router.get('/checkout', async (req, res, next) => {
 
   const products = await Cart.find();
@@ -230,6 +270,18 @@ router.get('/add', function (req, res, next) {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 router.post('/checkoutCart', async (req, res, next) => {
 
   const productData = req.body;
@@ -239,11 +291,25 @@ router.post('/checkoutCart', async (req, res, next) => {
 
   console.log(productId);
 
+  // upadate the total quantity per product after click add to cart
+  try {
+    const { quantity, payment, title } = req.body;
+    await Product.findOneAndUpdate({ title }, { quantity, payment }, { new: true });
+  }
+  catch (error) {
+    res.sendStatus(500);
+  }
+
+
+
   const productExist = await Cart.findOne({ title });
   console.log(productExist);
 
-
-  if (productExist && productExist.quantity > 0) {
+  if (productExist && quantity == 0) { // for a case the user try to add a product with 0 wuantity
+    await Cart.findOneAndRemove({ title });
+    res.sendStatus(200);
+  }
+  else if (productExist && productExist.quantity > 0) {
 
     productExist.quantity = quantity;
     await productExist.save();

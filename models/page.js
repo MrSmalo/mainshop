@@ -20,6 +20,14 @@ const productSchema = new mongoose.Schema({
     price: {
         type: Number,
         required: true
+    },
+    quantity: {
+        type: Number,
+        default: 0
+    },
+    payment: {
+        type: Number,
+        default: 0
     }
 });
 
