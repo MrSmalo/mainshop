@@ -17,7 +17,7 @@ const Cart = require('../models/addedPrice');
 
 router.get('/', (req, res, next) => {
 
-    res.render('admin/admin');
+    res.render('admin/admin', { navbar });
 });
 
 
@@ -30,7 +30,7 @@ router.post('/prod', async (req, res) => {
     const product = new Product(productData);
     await product.save();
 
-    const products = await Product.find(); // Retrieve all products
+    const products = await Product.find(); // retrieve all products
 
 });
 

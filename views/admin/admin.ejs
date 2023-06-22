@@ -1,22 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <%- include('../common/head') %>
+
+        <%- include('../common/homestyle') %>
 </head>
 
-<body>
-    <div class="container">
-        <h2>This is the admin area</h2>
-        <a class="btn btn-primary add-to-cart" href="./admin/add-product">
-            Add a new product</a>
-        <br>
-        <br>
-        <a class="btn btn-primary remove-item" href="./admin/delete-product">
-            Remove from website</a>
-    </div>
-</body>
+<header>
+    <%- include('../common/header', { links: navbar.links }) %>
+</header>
 
-</html>
+<div class="container">
+    <br><br>
+    <h2>This is the admin area</h2>
+
+
+    <a class="add" href="./admin/add-product">
+        Add a new product</a>
+    <br>
+    <a class="remove" href="./admin/delete-product">
+        Remove from website</a>
+</div>
+
+<footer>
+    <%- include('../common/footer') %>
+</footer>
