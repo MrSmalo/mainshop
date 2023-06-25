@@ -6,7 +6,7 @@ const protect = async (req,res,next)=>{
     if (req.cookies.token) {
         try{
             token = jwt.verify(req.cookies.token,process.env.JWT_SECRET)
-            req.user = await user.findById(token.id)
+            res.user = await user.findById(token.id)
             next()
         }
         catch(error){

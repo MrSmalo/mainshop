@@ -5,6 +5,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const bodyParser = require('body-parser');
 const dotenv = require('dotenv').config()
+const navbar = require('./routes/navBar.json');
 
 const { adminProtect } = require('./middleware/adminMiddleware')
 
@@ -80,7 +81,7 @@ app.use(function (err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  res.render('error',{navbar});
 });
 
 

@@ -1,3 +1,5 @@
+
+
 body {
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
@@ -5,4 +7,16 @@ body {
 
 a {
   color: #00B7FF;
+}
+
+.ui-menu{
+  list-style-type: none;
+  width: 50px;
+  background-color: white;
+}
+
+.ui-menu-item:hover{
+  
+  border: 1px solid black;
+  cursor: pointer;
 }

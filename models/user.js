@@ -15,10 +15,14 @@ const userSchema = mongoose.Schema({
         required: true,
         unique: true
     },
-    order: {
+    numOfOrders:{
+        type:Number,
+        default:0
+    },
+    order: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Order'
-    }
+    }]
 })
 
 const User = mongoose.model('User', userSchema);

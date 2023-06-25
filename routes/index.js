@@ -15,6 +15,7 @@ const Product = require('../models/page');
 const Cart = require('../models/cart');
 const Price = require('../models/addedPrice');
 const { log } = require('console');
+const {isLogin} = require('../middleware/isLoginMiddleware');
 
 
 
@@ -190,15 +191,17 @@ router.post('/remove-product', async (req, res) => {
   }
 });
 
-router.get('/', async (req, res, next) => {
+router.get('/',isLogin, async (req, res, next) => {
   const products = await Product.find();
   const total = await Price.find();
-  res.render('pages/home', { products, total, navbar });
+  const user = res.user;
+  res.render('pages/home', { products, total, navbar,user  });
 });
 
-router.get('/', async (req, res, next) => {
+router.get('/',isLogin, async (req, res, next) => {
   const products = await Product.find();
-  res.render('pages/home', { products, navbar, totalSum: cartData.totalSum });
+  const user = res.user;
+  res.render('pages/home', { products, navbar, totalSum: cartData.totalSum,user });
 });
 
 
@@ -224,15 +227,14 @@ router.get('/searchdata',async function(req,res,next){
   const param = new RegExp(req.query.term,'i')
   const products = await Product.find({title:param},'title');
   const prodtitle = products.map(product => product.title)
-  console.log(prodtitle);
   res.status(200).json(prodtitle);
 })
 
 
 
-router.get('/login', function (req, res, next) {
-  res.render('pages/login', { navbar });
-});
+// router.get('/login', function (req, res, next) {
+//   res.render('pages/login', { navbar });
+// });
 
 
 
@@ -240,12 +242,12 @@ router.get('/login', function (req, res, next) {
 
 
 
-router.get('/checkout', async (req, res, next) => {
-
+router.get('/checkout',isLogin, async (req, res, next) => {
   const products = await Cart.find();
   const total = await Price.find();
-
-  res.render('pages/checkout', { products, total, navbar });
+  const token = res.token
+  const user = res.user
+  res.render('pages/checkout', { products, total, navbar,token,user });
 });
 
 
@@ -294,7 +296,6 @@ router.post('/checkoutCart', async (req, res, next) => {
   const quantity = productData.quantity;
   const title = productData.title;
 
-  console.log(productId);
 
   // upadate the total quantity per product after click add to cart
   try {
