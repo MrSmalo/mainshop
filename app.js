@@ -6,7 +6,7 @@ var logger = require('morgan');
 const bodyParser = require('body-parser');
 const dotenv = require('dotenv').config()
 
-const {adminProtect} = require('./middleware/adminMiddleware')
+const { adminProtect } = require('./middleware/adminMiddleware')
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -22,7 +22,7 @@ var app = express();
 
 
 
-mongoose.connect('mongodb+srv://admin:ut3ze9qXFnBKwOrm@cluster0.wmokzde.mongodb.net/?retryWrites=true&w=majority',
+mongoose.connect('mongodb+srv://group:mainProject@cluster0.lpzfup3.mongodb.net/data',
   {
     useNewUrlParser: true,
     useUnifiedTopology: true
@@ -65,7 +65,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/admin',adminProtect, adminPages)
+app.use('/admin', adminProtect, adminPages)
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

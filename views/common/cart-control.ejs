@@ -1,8 +1,6 @@
 <div class="container">
     <div class="total-sum-container">
-        <h3 style="font-size: calc(1rem + .6vw);">Total sum: $<span id="total-sum">
-
-            </span></h3>
+        <h5>Total Sum Per Product: $<span id="total-sum">0</span></h5>
     </div>
 </div>
 
@@ -37,11 +35,14 @@
     updateTotalSum(totalSum);
 
 
+
     function increaseQ(quantityElement) {
         let quantity = parseInt(quantityElement.textContent);
         quantity++;
         quantityElement.textContent = quantity;
-        localStorage.setItem('quantity', quantity.toString());;
+        PostName = '/quantity';
+        routToPostNoForm(PostName);
+        // localStorage.setItem('quantity', quantity.toString());;
     }
 
     function decreaseQ(quantityElement) {
@@ -49,29 +50,29 @@
         if (quantity > 0) {
             quantity--;
             quantityElement.textContent = quantity;
-            localStorage.setItem('quantity', quantity.toString());
+            PostName = '/quantity';
+            routToPostNoForm(PostName);
+            //  localStorage.setItem('quantity', quantity.toString());
         }
     }
 
 
     function routToPostNoForm(PostName) {
+        const req = new XMLHttpRequest();
+        req.open('POST', PostName);
+        req.setRequestHeader('Content-Type', 'application/json');
 
-        fetch(PostName, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
+        req.onload = function () {
+            if (req.status === 200) {
+                window.location.reload();
             }
-        })
-            .then(response => response.json())
-            .then(data => {
+        };
 
-                window.location.reload();  // refresh the page
+        req.onerror = function () {
 
-            })
-            .catch(error => {
+        };
 
-
-            });
+        req.send();
     }
 
 
@@ -80,42 +81,45 @@
 
 
     function routToPostWithForm(formData, PostName) {
-        fetch(PostName, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(formData)
-        })
-            .then(response => response.json())
-            .then(data => {
-                window.location.reload();
-            })
-            .catch(error => {
+        const req = new XMLHttpRequest();
+        req.open('POST', PostName);
+        req.setRequestHeader('Content-Type', 'application/json');
 
-            });
+        req.onload = function () {
+            if (req.status === 200) {
+
+            }
+        };
+
+        req.onerror = function () {
+
+        };
+
+        req.send(JSON.stringify(formData));
     }
 
 
 
+
     function removeYourItemFromCart(productId, PostName) {
-        fetch(PostName, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ productId: productId })
-        })
-            .then(response => response.json())
-            .then(data => {
+        const req = new XMLHttpRequest();
+        req.open('POST', PostName);
+        req.setRequestHeader('Content-Type', 'application/json');
 
-                entryElement.remove();
-                console.log('s');
-                // window.location.reload();
-            })
-            .catch(error => {
+        req.onload = function () {
+            if (req.status === 200) {
+                const entryElement = document.getElementById(productId);
+                if (entryElement) {
+                    entryElement.remove(); // remove until restart
+                }
+            }
+        };
 
-            });
+        req.onerror = function () {
+
+        };
+
+        req.send(JSON.stringify({ productId: productId }));
     }
 
 
@@ -208,28 +212,107 @@
 
 
         // increase quantity
+        // increaseQuantityButton.forEach(button => {
+        //     button.addEventListener('click', function () {
+        //         const quantityElement = this.parentElement.querySelector('.quantity');
+
+        //         increaseQ(quantityElement);
+        //         localStorage.setItem('quantity', quantityElement.textContent);
+        //     });
+
+        // });
+
+
+
+
+
+
+
+
+
+
+
         increaseQuantityButton.forEach(button => {
-            button.addEventListener('click', function () {
+            button.addEventListener('click', async function () {
                 const quantityElement = this.parentElement.querySelector('.quantity');
+                const title = this.dataset.title;
 
-                increaseQ(quantityElement);
-                localStorage.setItem('quantity', quantityElement.textContent);
+                let quantity = parseInt(quantityElement.textContent);
+                quantity++;
+
+                quantityElement.textContent = quantity;
+
+                // const formData = {
+                //     title: title,
+                //     quantity: quantity
+                // };
+
+                // PostName = '/quantity';
+                // routToPostWithForm(formData, PostName);
+
+
             });
-
         });
+
+
+
+
+        decreaseQuantityButton.forEach(button => {
+            button.addEventListener('click', async function () {
+                const quantityElement = this.parentElement.querySelector('.quantity');
+                const title = this.dataset.title;
+
+                let quantity = parseInt(quantityElement.textContent);
+                if (quantity > 0) {
+                    quantity--;
+                    quantityElement.textContent = quantity;
+                }
+
+                // const formData = {
+                //     title: title,
+                //     quantity: quantity
+                // };
+
+                // PostName = '/quantity';
+                // routToPostWithForm(formData, PostName);
+
+
+            });
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
         // decrease quantity
-        decreaseQuantityButton.forEach(button => {
-            button.addEventListener('click', function () {
-                const quantityElement = this.parentElement.querySelector('.quantity');
+        // decreaseQuantityButton.forEach(button => {
+        //     button.addEventListener('click', function () {
+        //         const quantityElement = this.parentElement.querySelector('.quantity');
 
-                decreaseQ(quantityElement);
-                localStorage.setItem('quantity', quantityElement.textContent);
+        //         decreaseQ(quantityElement);
+        //         localStorage.setItem('quantity', quantityElement.textContent);
 
-            });
+        //     });
 
-        });
+        // });
 
 
 
@@ -244,8 +327,16 @@
                 const category = this.dataset.category;
                 const description = this.dataset.description;
                 const image = this.dataset.image;
-                const quantity = parseInt(this.parentElement.querySelector('.quantity').textContent);
-                const payment = parseInt(this.parentElement.querySelector('.payment').textContent);
+                // const quantity = parseInt(this.parentElement.querySelector('.quantity').textContent);
+
+                const quantityElement = this.parentElement.querySelector('.quantity');
+                let quantity = parseInt(quantityElement.textContent);
+
+                const paymentElement = this.parentElement.querySelector('.quantity');
+                let payment = parseInt(paymentElement.textContent);
+
+                payment = quantity * price;
+
                 const productId = this.parentElement.querySelector('.add-to-cart').getAttribute('data-product-id');
 
                 const formData = {

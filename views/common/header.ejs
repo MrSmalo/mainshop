@@ -17,37 +17,42 @@
                 <% }); %>
         </ul>
     </div>
+
 </nav>
 
 <style>
-    .cart-container {
-        display: flex;
+    .fixed-buttons {
         position: fixed;
-        top: 2%;
-        right: 10px;
-        margin-left: 79%;
+        top: 9px;
+        right: 11px;
         z-index: 9999;
     }
 
-    .cart-container button {
-        margin-right: 10px;
+
+    .cart-container {
+        display: flex;
+        justify-content: flex-end;
+        gap: 7px;
     }
 
     .total-sum-container {
         position: fixed;
         top: 10px;
-        left: 44%;
+        left: 41%;
         opacity: 0.8;
         max-width: 400px;
         z-index: 9999;
     }
 </style>
 
-<div class="container">
-    <div class="cart-container">
-        <button class="btn btn-primary reset-cart">Reset the cart</button>
-        <a class="btn btn-primary" href="/checkout" role="button">Checkout</a>
+<div class="fixed-buttons">
+    <div class="container">
+        <div class="cart-container">
+            <button class="btn btn-primary reset-cart">Reset the cart</button>
+            <a class="btn btn-primary" href="/checkout" role="button">Checkout</a>
+        </div>
     </div>
 </div>
+
 
 <br><br>
