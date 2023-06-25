@@ -14,6 +14,7 @@ const mongoose = require('mongoose');
 const Product = require('../models/page');
 const Cart = require('../models/cart');
 const Price = require('../models/addedPrice');
+const { log } = require('console');
 
 
 
@@ -152,21 +153,11 @@ router.post('/remove-product', async (req, res) => {
   }
 });
 
-
-
-
 router.get('/', async (req, res, next) => {
   const products = await Product.find();
   const total = await Price.find();
-
   res.render('pages/home', { products, total, navbar });
 });
-
-
-
-
-
-
 
 router.get('/', async (req, res, next) => {
   const products = await Product.find();
@@ -187,6 +178,20 @@ router.get('/contact', function (req, res, next) {
 router.get('/product', function (req, res, next) {
   res.render('pages/product', { navbar });
 });
+
+router.get('/search',function(req,res,next){
+  res.render("pages/search");
+})
+
+router.get('/searchdata',async function(req,res,next){
+  const param = new RegExp(req.query.term,'i')
+  const products = await Product.find({title:param},'title');
+  const prodtitle = products.map(product => product.title)
+  console.log(prodtitle);
+  res.status(200).json(prodtitle);
+})
+
+
 
 router.get('/login', function (req, res, next) {
   res.render('pages/login', { navbar });
