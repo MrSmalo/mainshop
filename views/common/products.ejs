@@ -64,22 +64,22 @@
                     </ul>
                 </div>
             </nav>
-
             <div class="container">
-                <div class="price-range-selector">
-                    <label for="price-range-select">Select Price Range</label>
-                    <select id="price-range-select">
-                        <option value="0">All</option>
-                        <option value="10">Max $5</option>
-                        <option value="10">Max $10</option>
-                        <option value="20">Max $20</option>
-                        <option value="50">Max $50</option>
-                        <option value="100">Max $100</option>
-                        <option value="500">Max $500</option>
-                        <option value="1000">Max $1000</option>
-                    </select>
+                <div class="price-range-selector row">
+                    <div class="col">
+                        <label for="price-input-min" class="under">Set a minimum price</label>
+                        <input type="number" class="form-control price-input-min" placeholder="Set a minimum price">
+                    </div>
+                    <div class="col">
+                        <label for="price-input-max" class="under">Set a maximum price</label>
+                        <input type="number" class="form-control price-input-max" placeholder="Set a maximum price">
+                    </div>
+                    <div id="price-range-select">
+
+                    </div>
                 </div>
             </div>
+
         </div>
 
 
@@ -126,8 +126,7 @@
                             <span class="payment" data-product-id="<%= product._id %>" data-title="<%= product.title %>"
                                 data-category="<%= product.category %>" data-description="<%= product.description %>"
                                 data-image="<%= product.image %>" data-quantity="<%= product.quantity %>"
-                                data-price="<%= product.price %>">Total: $
-                                <%= product.payment %>
+                                data-price="<%= product.price %>">Total: $<%= product.payment %>
                             </span>
                         </div>
                         <a class="btn btn-primary add-to-cart" href="/" role="button"
@@ -156,6 +155,11 @@
 
 
         <script>
+
+            const priceInputMin = document.querySelector('.price-input-min');
+            const priceInputMax = document.querySelector('.price-input-max');
+
+
             function filterCategory() {
                 const categoryOption = document.querySelectorAll('.nav-link2');
                 const productEntries = document.querySelectorAll('.entry');
@@ -165,6 +169,10 @@
                 categoryOption.forEach((entry) => {  // filter the categories for each click
                     entry.addEventListener('click', (event) => {
                         event.preventDefault();
+
+                        priceInputMin.value = ''; // to reaser the values of the typed numbers
+                        priceInputMax.value = ''; // to reaser the values of the typed numbers
+
                         const selectedCategory = entry.getAttribute('data-category');
 
                         productEntries.forEach((entry) => {
@@ -187,8 +195,19 @@
                     });
                 });
 
+            }
+
+            function brandsFilter() {
+
+                const productEntries = document.querySelectorAll('.entry');
+                const brandsOption = document.querySelectorAll('.brand-selector');
+
                 brandsOption.forEach((selector) => {
                     selector.addEventListener('change', () => {
+
+                        priceInputMin.value = ''; // to reaser the values of the typed numbers
+                        priceInputMax.value = ''; // to reaser the values of the typed numbers
+
                         const selectedBrand = selector.value;
 
                         productEntries.forEach((entry) => {
@@ -203,26 +222,29 @@
                 });
             }
 
-            function filterPrice() {
-                const priceRange = document.getElementById('price-range-select');
+            function filterByPriceRange() { // filter function by min and max price and a price range
+                const typedPriceMin = parseFloat(document.querySelector('.price-input-min').value); // to convert the string into a floating number
+                const typedPriceMax = parseFloat(document.querySelector('.price-input-max').value);
                 const productEntries = document.querySelectorAll('.entry');
 
-                priceRange.addEventListener('change', (event) => {
-                    const maxPrice = parseInt(event.target.value);
+                productEntries.forEach((entry) => {
+                    const price = parseFloat(entry.querySelector('.product-price').innerText.split('$')[1]); // to take to second key
 
-                    productEntries.forEach((entry) => {
+                    if (
+                        (isNaN(typedPriceMin) || price >= typedPriceMin) && // show all the price between the min price and max price
+                        (isNaN(typedPriceMax) || price <= typedPriceMax)
+                    ) {
                         entry.style.display = 'block';
-                        const price = parseInt(entry.querySelector('.product-price').innerText.split('$')[1]); // take the second key without the '$'
-
-                        if (maxPrice === 0 || price <= maxPrice) {
-                            entry.style.display = 'block';
-                        }
-                        else {
-                            entry.style.display = 'none'; // hide the unwanted products
-                        }
-                    });
+                    }
+                    else {
+                        entry.style.display = 'none';
+                    }
                 });
             }
+
+
+
+
 
 
 
@@ -234,7 +256,7 @@
 
                 searchButton.addEventListener('click', () => {
                     const search = searchInput.value.toUpperCase().trim(); // to remove spaces
-                    
+
                     productEntries.forEach((entry) => {
                         const productTitle = entry.querySelector('.product-title').textContent.toUpperCase().trim(); // to remove spaces
 
@@ -248,10 +270,12 @@
                 });
 
             }
-
+            //  filterByPriceRange();
+            priceInputMin.addEventListener('input', filterByPriceRange);
+            priceInputMax.addEventListener('input', filterByPriceRange);
+            brandsFilter();
             searchFilter(); // the function to find the search input
             filterCategory(); //  the function to filter the categores
-            filterPrice();  //  the function to filter the prices
 
 
         </script>

@@ -7,30 +7,30 @@ const orderModel = require('../models/order')
 const mongoose = require('mongoose')
 const jwt = require('jsonwebtoken');
 const { protect } = require('../middleware/authMiddleware')
-const {isLogin} = require('../middleware/isLoginMiddleware');
+const { isLogin } = require('../middleware/isLoginMiddleware');
 const axios = require('axios')
 
 /* GET users listing. */
 router.get('/', protect, async (req, res, next) => {
   const user = res.user
   await user.populate('order');
-  res.render('user/userpage', { navbar,user });
+  res.render('user/userpage', { navbar, user });
 
 });
 
-router.get('/clearOrders',protect,async (req,res,next)=>{
+router.get('/clearOrders', protect, async (req, res, next) => {
   const user = res.user;
-  await orderModel.deleteMany({'user':user._id});
-  await user.updateOne({'order':[]});
-  await user.updateOne({'numOfOrders':0})
+  await orderModel.deleteMany({ 'user': user._id });
+  await user.updateOne({ 'order': [] });
+  await user.updateOne({ 'numOfOrders': 0 })
   res.redirect('/users');
 })
 
-router.get('/login',isLogin, function (req, res, next) {
+router.get('/login', isLogin, function (req, res, next) {
   res.render('user/loginpage', { navbar })
 })
 
-router.post('/login',isLogin, async function (req, res, next) {
+router.post('/login', isLogin, async function (req, res, next) {
   const mail = req.body.mail;
   user = await UserModel.findOne({ mail: mail })
   if (user && user.password === req.body.password) {
@@ -41,11 +41,11 @@ router.post('/login',isLogin, async function (req, res, next) {
   }
 })
 
-router.get('/signin',isLogin, function (req, res, next) {
+router.get('/signin', isLogin, function (req, res, next) {
   res.render('user/signinpage', { navbar })
 })
 
-router.post('/signin',isLogin, async function (req, res, next) {
+router.post('/signin', isLogin, async function (req, res, next) {
   try {
     const userData = req.body;
     const user = new UserModel(userData)
@@ -58,7 +58,7 @@ router.post('/signin',isLogin, async function (req, res, next) {
   }
 })
 
-router.get("/logout",protect,function(req,res,next){
+router.get("/logout", protect, function (req, res, next) {
   res.clearCookie('token')
   res.redirect('/')
 })
@@ -69,8 +69,8 @@ const generateToken = (id) => {
   })
 }
 
-router.post('/confirmation',protect,async function (req, res, next) {
-  
+router.post('/confirmation', protect, async function (req, res, next) {
+
   if (!req.body.prodTitle) {
     res.redirect('/')
     return
@@ -79,7 +79,7 @@ router.post('/confirmation',protect,async function (req, res, next) {
   const user = res.user;
   user.numOfOrders++;
   for (let i = 0; i < req.body.prodQuantity.length; i++) {
-    
+
     const order = new orderModel({
       product: req.body.prodTitle[i],
       price: req.body.prodPrice[i],

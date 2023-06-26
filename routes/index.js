@@ -14,8 +14,9 @@ const mongoose = require('mongoose');
 const Product = require('../models/page');
 const Cart = require('../models/cart');
 const Price = require('../models/addedPrice');
+const Contact = require('../models/contact');
 const { log } = require('console');
-const {isLogin} = require('../middleware/isLoginMiddleware');
+const { isLogin } = require('../middleware/isLoginMiddleware');
 
 
 
@@ -52,40 +53,6 @@ router.post('/remove-product-checkout', async (req, res) => {
   res.sendStatus(200); // send a confirm status code
 
 });
-
-
-
-
-
-
-
-
-
-// to update in the server the total quantity after each click
-// router.post('/quantity', async (req, res) => {
-//   try {
-//     const { quantity, title } = req.body;
-//     await Product.findOneAndUpdate({ title }, { quantity }, { new: true });
-//     res.sendStatus(200);
-//   }
-//   catch (error) {
-//     res.sendStatus(500);
-//   }
-// });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -191,17 +158,37 @@ router.post('/remove-product', async (req, res) => {
   }
 });
 
-router.get('/',isLogin, async (req, res, next) => {
+
+
+
+router.post('/delete-message', async (req, res) => {
+  try {
+    const { messageId } = req.body;
+    await Contact.deleteOne({ _id: messageId });
+    res.json({ success: true });
+  }
+
+  catch (error) {
+    console.error(error);
+    res.json({ success: false });
+  }
+});
+
+
+
+
+
+router.get('/', isLogin, async (req, res, next) => {
   const products = await Product.find();
   const total = await Price.find();
   const user = res.user;
-  res.render('pages/home', { products, total, navbar,user  });
+  res.render('pages/home', { products, total, navbar, user });
 });
 
-router.get('/',isLogin, async (req, res, next) => {
+router.get('/', isLogin, async (req, res, next) => {
   const products = await Product.find();
   const user = res.user;
-  res.render('pages/home', { products, navbar, totalSum: cartData.totalSum,user });
+  res.render('pages/home', { products, navbar, totalSum: cartData.totalSum, user });
 });
 
 
@@ -219,13 +206,13 @@ router.get('/product', function (req, res, next) {
   res.render('pages/product', { navbar });
 });
 
-router.get('/search',function(req,res,next){
+router.get('/search', function (req, res, next) {
   res.render("pages/search");
 })
 
-router.get('/searchdata',async function(req,res,next){
-  const param = new RegExp(req.query.term,'i')
-  const products = await Product.find({title:param},'title');
+router.get('/searchdata', async function (req, res, next) {
+  const param = new RegExp(req.query.term, 'i')
+  const products = await Product.find({ title: param }, 'title');
   const prodtitle = products.map(product => product.title)
   res.status(200).json(prodtitle);
 })
@@ -242,15 +229,22 @@ router.get('/searchdata',async function(req,res,next){
 
 
 
-router.get('/checkout',isLogin, async (req, res, next) => {
+router.get('/checkout', isLogin, async (req, res, next) => {
   const products = await Cart.find();
   const total = await Price.find();
   const token = res.token
   const user = res.user
-  res.render('pages/checkout', { products, total, navbar,token,user });
+  res.render('pages/checkout', { products, total, navbar, token, user });
 });
 
 
+router.get('/finalStepToPay', isLogin, async (req, res, next) => {
+  const products = await Cart.find();
+  const total = await Price.find();
+  const token = res.token
+  const user = res.user
+  res.render('pages/finalStepToPay', { products, total, navbar, token, user });
+});
 
 
 
@@ -282,6 +276,26 @@ router.get('/add', function (req, res, next) {
 
 
 
+
+router.post('/contactUs', async (req, res, next) => { // send the request to mongdb
+
+  try {
+    const contactUs = req.body;
+    const message = new Contact(contactUs);
+    await message.save(); // save the request in mongodb
+    res.send('<script>alert("Your request was sent successfully"); window.location.href = "/contact";</script>'); // give an alert to the client and then refresh the page
+
+  }
+  catch (error) {
+    res.sendStatus(500);
+  }
+
+
+  // const contactUs = req.body;
+  // const message = new Contact(contactUs);
+  // await message.save();
+
+});
 
 
 

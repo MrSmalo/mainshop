@@ -7,7 +7,7 @@ const navbar = require('./navbar.json');
 
 const mongoose = require('mongoose');
 const Product = require('../models/page');
-const Cart = require('../models/addedPrice');
+const Contact = require('../models/contact');
 
 
 // router.get('/', function (req, res, next) {
@@ -52,7 +52,18 @@ router.post('/remove-product', async (req, res) => {
 });
 
 
+router.post('/delete-message', async (req, res) => {
+    try {
+        const { messageId } = req.body;
+        await Contact.deleteOne({ _id: messageId });
+        res.json({ success: true });
+    }
 
+    catch (error) {
+        console.error(error);
+        res.json({ success: false });
+    }
+});
 
 
 
@@ -67,12 +78,19 @@ router.get('/add-product', function (req, res, next) {
 
 
 
-
-
-
 router.get('/delete-product', async (req, res, next) => {
     const products = await Product.find();
     res.render('admin/delete-product', { products, navbar });
+});
+
+
+
+
+router.get('/watch-requstes', async (req, res, next) => {
+
+    const contacts = await Contact.find();
+
+    res.render('admin/watch-requstes', { contact: contacts, navbar });
 });
 
 

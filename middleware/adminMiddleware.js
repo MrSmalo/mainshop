@@ -1,26 +1,26 @@
 const jwt = require('jsonwebtoken')
 const user = require('../models/user')
 
-const adminProtect = async (req,res,next)=>{
+const adminProtect = async (req, res, next) => {
     let token
     if (req.cookies.token) {
-        try{
-            token = jwt.verify(req.cookies.token,process.env.JWT_SECRET)
+        try {
+            token = jwt.verify(req.cookies.token, process.env.JWT_SECRET)
+            req.user = await user.findById(token.id)
             if (req.user.name === 'admin') {
-                res.user = await user.findById(token.id)
                 next()
-            }else{
+            } else {
                 res.redirect('/')
             }
-            
+
         }
-        catch(error){
+        catch (error) {
             console.log(error);
             res.redirect('/');
         }
-    }else{
+    } else {
         res.redirect('/')
     }
 }
 
-module.exports = {adminProtect}
+module.exports = { adminProtect }
