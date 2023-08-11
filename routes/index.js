@@ -13,6 +13,7 @@ const path = require('path');
 const mongoose = require('mongoose');
 const Product = require('../models/page');
 const Cart = require('../models/cart');
+const ordersOfAll = require('../models/order');
 const Price = require('../models/addedPrice');
 const Contact = require('../models/contact');
 const { log } = require('console');
@@ -194,8 +195,27 @@ router.get('/', isLogin, async (req, res, next) => {
 
 
 
-router.get('/about', function (req, res, next) {
-  res.render('pages/about', { navbar });
+// router.get('/about', async (req, res, next) => {
+//   // const ordersOfAll = await Order.find();
+//   res.render('pages/about', { navbar });
+// });
+
+router.get('/about', async (req, res, next) => {
+  try {
+
+    const orders = await ordersOfAll.find();
+
+
+    let totalSum = 0;
+    orders.forEach((order) => {
+      totalSum += order.price * order.quantity;
+    });
+
+    res.render('pages/about', { navbar, totalSum });
+  } catch (error) {
+    console.error('Error fetching orders:', error);
+    res.status(500).render('error', { navbar });
+  }
 });
 
 router.get('/contact', function (req, res, next) {

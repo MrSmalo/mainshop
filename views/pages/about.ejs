@@ -1,23 +1,81 @@
 <head>
     <%- include('../common/head')%>
+
+        <%- include('../common/homestyle') %>
 </head>
 
 <body>
     <header>
         <%- include('../common/header', { links: navbar.links }) %>
             <%- include('../common/cart-sum')%>
+
+                <script async defer
+                    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB3xsqtuuzminYxX_s9sqzILXU2Wv5OrRo&callback=mapFunc"></script>
+
     </header>
+
+
     <br>
     <main>
         <div class="container">
             <div class="inside"></div>
             <h2>this is about page</h2>
             <p>this is about body</p>
+
         </div>
+
+
+        <style>
+
+        </style>
+        </head>
+
+
+
+        <div class="map-c">
+
+            <div class="location">
+
+                <div class="map">
+                    <h5>Find us in Rishon Lezion - College of Management Academic Studies</h5>
+                    <p>Opening Hours: 06:00am - 20:00pm</p>
+                </div>
+                <div class="map-container" id="colamanMap"></div>
+            </div>
+        </div>
+        <br><br><br><br><br><br>
+
+        <script>
+            function mapFunc() {
+
+                // the visible map
+                var colmanM = new google.maps.Map(document.getElementById('colamanMap'), {
+                    center: { lat: 31.969671199548173, lng: 34.7709617115777 },
+                    zoom: 14
+                });
+
+                // the makrer on the map
+                var marker4 = new google.maps.Marker({
+                    position: { lat: 31.969671199548173, lng: 34.7709617115777 },
+                    map: colmanM,
+                    title: "College of Management Academic Studies"
+                });
+
+            }
+        </script>
+
+
+
+
+
+
     </main>
     <footer>
         <%- include('../common/footer')%>
     </footer>
 </body>
+
+
+<br><br>
 
 </html>
