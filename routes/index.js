@@ -26,10 +26,6 @@ var cartData = {
 };
 
 
-
-
-
-
 router.post('/prod', async (req, res) => {
 
   const productData = req.body;
@@ -39,10 +35,6 @@ router.post('/prod', async (req, res) => {
   // const products = await Product.find(); // to show to products
 
 });
-
-
-
-
 // remove product from checkout cart
 router.post('/remove-product-checkout', async (req, res) => {
   const { productId } = req.body;
@@ -53,13 +45,6 @@ router.post('/remove-product-checkout', async (req, res) => {
   res.sendStatus(200); // send a confirm status code
 
 });
-
-
-
-
-
-
-
 
 router.post('/checkoutSum', async (req, res, next) => {
   try {
@@ -138,12 +123,6 @@ router.post('/checkoutSumReset', async (req, res, next) => {
 
 });
 
-
-
-
-
-
-
 // remove product from database
 router.post('/remove-product', async (req, res) => {
   try {
@@ -158,9 +137,6 @@ router.post('/remove-product', async (req, res) => {
   }
 });
 
-
-
-
 router.post('/delete-message', async (req, res) => {
   try {
     const { messageId } = req.body;
@@ -174,25 +150,20 @@ router.post('/delete-message', async (req, res) => {
   }
 });
 
-
-
-
-
 router.get('/', isLogin, async (req, res, next) => {
   const products = await Product.find();
   const total = await Price.find();
   const user = res.user;
-  res.render('pages/home', { products, total, navbar, user });
+  const token = res.token;
+  res.render('pages/home', { products, total, navbar, user,token });
 });
 
-router.get('/', isLogin, async (req, res, next) => {
-  const products = await Product.find();
-  const user = res.user;
-  res.render('pages/home', { products, navbar, totalSum: cartData.totalSum, user });
-});
-
-
-
+//check if needed
+// router.get('/', isLogin, async (req, res, next) => {
+//   const products = await Product.find();
+//   const user = res.user;
+//   res.render('pages/home', { products, navbar, totalSum: cartData.totalSum, user });
+// });
 
 router.get('/about', function (req, res, next) {
   res.render('pages/about', { navbar });
@@ -217,18 +188,6 @@ router.get('/searchdata', async function (req, res, next) {
   res.status(200).json(prodtitle);
 })
 
-
-
-// router.get('/login', function (req, res, next) {
-//   res.render('pages/login', { navbar });
-// });
-
-
-
-
-
-
-
 router.get('/checkout', isLogin, async (req, res, next) => {
   const products = await Cart.find();
   const total = await Price.find();
@@ -236,7 +195,6 @@ router.get('/checkout', isLogin, async (req, res, next) => {
   const user = res.user
   res.render('pages/checkout', { products, total, navbar, token, user });
 });
-
 
 router.get('/finalStepToPay', isLogin, async (req, res, next) => {
   const products = await Cart.find();
@@ -246,36 +204,9 @@ router.get('/finalStepToPay', isLogin, async (req, res, next) => {
   res.render('pages/finalStepToPay', { products, total, navbar, token, user });
 });
 
-
-
-
-
-
-
-
 router.get('/add', function (req, res, next) {
   res.render('pages/add', { navbar });
 });
-
-
-// router.post('/checkoutCart', async (req, res, next) => {
-
-//   const productData = req.body;
-//   const checkoutCart = new Cart(productData);
-
-//   await checkoutCart.save();
-//   res.sendStatus(200); // send a success status code
-
-// });
-
-
-
-
-
-
-
-
-
 
 router.post('/contactUs', async (req, res, next) => { // send the request to mongdb
 
@@ -289,19 +220,7 @@ router.post('/contactUs', async (req, res, next) => { // send the request to mon
   catch (error) {
     res.sendStatus(500);
   }
-
-
-  // const contactUs = req.body;
-  // const message = new Contact(contactUs);
-  // await message.save();
-
 });
-
-
-
-
-
-
 
 router.post('/checkoutCart', async (req, res, next) => {
 

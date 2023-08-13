@@ -8,7 +8,14 @@
         <%- include('../common/header', { links: navbar.links }) %>
     </header>
     <div class="container">
-        <h1 class="text-center mt-5">Sign Un</h1>
+        <h1 class="text-center mt-5">Sign up</h1>
+
+        <% if(message){ %>
+        <div id="popUp" class="alert alert-danger" role="alert">
+            <%=message %>
+        </div>
+        <% } %>
+
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <form method="post" action="/users/signin" id="userForm">
@@ -27,7 +34,7 @@
                             required></input>
                     </div>
                     <button type="submit" id="submitBtn" class="btn btn-primary">Submit</button>
-                    <span>Already have a user?</span> <a href="/users/login">Login</a>
+                    <span>Already have a user?</span> <a href="/users/login">Login  </a>
                 </form>
             </div>
         </div>
@@ -38,3 +45,5 @@
 </footer>
 
 </body>
+
+<script src="/popUp.js"></script>

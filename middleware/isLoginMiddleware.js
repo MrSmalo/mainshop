@@ -8,6 +8,9 @@ const isLogin = async (req,res,next)=>{
             token = jwt.verify(req.cookies.token,process.env.JWT_SECRET)
             res.user = await user.findById(token.id)
             res.token = 1;
+            if (res.user.name === 'admin') {
+                res.token = 2;
+            }
             next()
         }
         catch(error){

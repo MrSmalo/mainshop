@@ -27,7 +27,9 @@ router.get('/clearOrders', protect, async (req, res, next) => {
 })
 
 router.get('/login', isLogin, function (req, res, next) {
-  res.render('user/loginpage', { navbar })
+  const message = req.cookies.message
+  res.clearCookie('message')
+  res.render('user/loginpage', { navbar,message })
 })
 
 router.post('/login', isLogin, async function (req, res, next) {
@@ -37,12 +39,15 @@ router.post('/login', isLogin, async function (req, res, next) {
     res.cookie('token', generateToken(user._id))
     res.redirect('/users');
   } else {
+    res.cookie('message','Invalid details')
     res.redirect('/users/login')
   }
 })
 
 router.get('/signin', isLogin, function (req, res, next) {
-  res.render('user/signinpage', { navbar })
+  const message = req.cookies.message
+  res.clearCookie('message')
+  res.render('user/signinpage', { navbar,message })
 })
 
 router.post('/signin', isLogin, async function (req, res, next) {
@@ -54,7 +59,12 @@ router.post('/signin', isLogin, async function (req, res, next) {
     res.redirect('/')
   }
   catch (error) {
-
+    console.log(error);
+    if (error.code === 11000) {
+      const err = Object.keys(error.keyValue)[0];
+      res.cookie('message',`${err} already exists`)
+    }
+    res.redirect('/users/signin');
   }
 })
 

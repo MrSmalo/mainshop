@@ -6,6 +6,11 @@ var logger = require('morgan');
 const bodyParser = require('body-parser');
 const dotenv = require('dotenv').config()
 const navbar = require('./routes/navBar');
+const FB = require('fb');
+const flash = require('connect-flash');
+const session = require('express-session');
+
+FB.setAccessToken('EAAU4mDmqIX4BO3K2zAaTgWZBKZC94zMpT2ZAHvKZC3NDWjnRnpDuCORTQB584yXThTuZAl4xUY4j22KzB19nqK1KCAuHrZB1tiXDN5s0lGgzCecDmbQAqK1T1rXRaRAT1tNTqz9RPxEiNbXaa99EZAonoJV7FPXnPNj2VEFzwtvakZC6Jk0f1jo6cGvv5j5JekIZD')
 
 const { adminProtect } = require('./middleware/adminMiddleware')
 
@@ -13,15 +18,9 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var adminPages = require('./routes/admin_pages');
 
-
 const mongoose = require("mongoose");
 
-
-
 var app = express();
-
-
-
 
 mongoose.connect('mongodb+srv://group:mainProject@cluster0.lpzfup3.mongodb.net/data',
   {
@@ -38,6 +37,7 @@ db.once("open", function () {
 });
 
 
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -47,22 +47,18 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-
-
-//var pages = require('./routes/pages.js');
-
-
-
-
-
-
-
-
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(session({
+  secret:'salt',
+  resave:false,
+  saveUninitialized:true,
+}))
+app.use(flash())
+app.use('/fonts',express.static(path.join(__dirname,'node_modules/font-awesome/css')))
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
