@@ -120,7 +120,7 @@
                                                 <div class="container">
                                                     <br>
                                                     <h5>Total sum to pay:</h5>
-                                                    <h5><%- include('../common/finalSumToPay')%></h5>
+                                                    <h5 id="sumall"><%- include('../common/finalSumToPay')%></h5>
                                                 </div>
 
                                                 <% if(token==1){ %>
@@ -133,10 +133,53 @@
 
                                         </div>
                                 </form>
+                                
                 </payment>
                 <br><br><br><br>
         </body>
-
+        <h5 id="currency">Other currency:</h5>
+        <br>
+        <button id="USD" class="btn btn-primary">USD</button>
+        <button id="ILS" class="btn btn-danger">ILS</button>
+        <button id="EUR" class="btn btn-warning">EUR</button>
         <footer>
             <%- include('../common/footer')%>
         </footer>
+        <% var sum = include('../common/finalSumToPay') %>
+        <script>
+            $(document).ready(function () {
+                sum = $(sum).children().children()[1].innerHTML;
+                $('#USD').on('click',function (e) { 
+                    e.preventDefault();
+                    $.ajax({
+                        url:'https://api.currencyapi.com/v3/latest?apikey=cur_live_hfiyXKLFzuZkGuEAMnvrqNxUPxS95T6shK4relna',
+                        dataType:'Json'
+                    }).done(function (e) {
+                        sum = sum.replace("$","")
+                        $("#currency").text(sum + "$"); 
+                     })
+                 })
+                 $('#ILS').on('click',function (e) { 
+                    e.preventDefault();
+                    $.ajax({
+                        url:'https://api.currencyapi.com/v3/latest?apikey=cur_live_hfiyXKLFzuZkGuEAMnvrqNxUPxS95T6shK4relna',
+                        dataType:'Json'
+                    }).done(function (e) {
+                        const curr = e.data.ILS.value
+                        sum = sum.replace("$","");
+                        $("#currency").text(Math.floor(sum * curr) + " ILS");
+                     })
+                 })
+                 $('#EUR').on('click',function (e) { 
+                    e.preventDefault();
+                    $.ajax({
+                        url:'https://api.currencyapi.com/v3/latest?apikey=cur_live_hfiyXKLFzuZkGuEAMnvrqNxUPxS95T6shK4relna',
+                        dataType:'Json'
+                    }).done(function (e) {
+                        const curr = e.data.EUR.value
+                        sum = sum.replace("$","");
+                        $("#currency").text(Math.floor(sum * curr) + `\xA3`);
+                     })
+                 })
+             })
+        </script>

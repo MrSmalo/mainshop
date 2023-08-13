@@ -63,6 +63,8 @@ router.post('/signin', isLogin, async function (req, res, next) {
     if (error.code === 11000) {
       const err = Object.keys(error.keyValue)[0];
       res.cookie('message',`${err} already exists`)
+    }else{
+      res.cookie('message',`Password is too short! Insert at least 6 digits`)
     }
     res.redirect('/users/signin');
   }
@@ -89,7 +91,19 @@ router.post('/confirmation', protect, async function (req, res, next) {
   const user = res.user;
   user.numOfOrders++;
   for (let i = 0; i < req.body.prodQuantity.length; i++) {
-
+    if (req.body.prodQuantity.length === 1) {
+      const order = new orderModel({
+        product: req.body.prodTitle,
+        price: req.body.prodPrice,
+        quantity: req.body.prodQuantity,
+        user: user._id,
+        orderNo: user.numOfOrders
+      })
+      user.order.push(order._id);
+      await order.save();
+      await user.updateOne(user);
+      break;
+    }
     const order = new orderModel({
       product: req.body.prodTitle[i],
       price: req.body.prodPrice[i],
@@ -100,6 +114,7 @@ router.post('/confirmation', protect, async function (req, res, next) {
     user.order.push(order._id);
     await order.save();
     await user.updateOne(user);
+    
   }
   await axios.post('http://localhost:3000/checkoutSumReset')
   await axios.post('http://localhost:3000/remove-all')
