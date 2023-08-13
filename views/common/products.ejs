@@ -26,9 +26,8 @@
                                     class="categories">Candles</span></a>
                             <select class="brand-selector">
                                 <option value="All" disabled selected>Brands List</option>
-                                <option value="A">A</option>
-                                <option value="B">B</option>
-                                <option value="C">C</option>
+                                <option value="TOM FORD_C">TOM FORD</option>
+                                <option value="JO MALONE_C">JO MALONE</option>
                             </select>
                         </li>
                         <li class="nav-item2">
@@ -36,9 +35,8 @@
                                     class="categories">Soaps</span></a>
                             <select class="brand-selector">
                                 <option value="All" disabled selected>Brands List</option>
-                                <option value="D">D</option>
-                                <option value="E">E</option>
-                                <option value="F">F</option>
+                                <option value="TOM FORD_S">TOM FORD</option>
+                                <option value="JO MALONE_S">JO MALONE</option>
                             </select>
                         </li>
                         <li class="nav-item2">
@@ -46,9 +44,8 @@
                                     class="categories">Fragrance</span></a>
                             <select class="brand-selector">
                                 <option value="All" disabled selected>Brands List</option>
-                                <option value="G">G</option>
-                                <option value="H">H</option>
-                                <option value="I">I</option>
+                                <option value="TOM FORD_F">TOM FORD</option>
+                                <option value="JO MALONE_F">JO MALONE</option>
                             </select>
                         </li>
                         <li class="nav-item2">
@@ -56,9 +53,7 @@
                                     class="categories">Other</span></a>
                             <select class="brand-selector">
                                 <option value="All" disabled selected>Brands List</option>
-                                <option value="J">J</option>
-                                <option value="K">K</option>
-                                <option value="L">L</option>
+                                <option value="Mixed Items">Mixed Items</option>
                             </select>
                         </li>
                     </ul>
@@ -95,6 +90,7 @@
                 <% products.forEach((product)=> { %>
                     <div class="entry" data-product-id="<%= product._id %>">
                         <div class="product-info">
+
                             <img class="product-image" src="<%= product.image %>" alt="Product Image">
                             <div class="product-details">
                                 <h5 class="product-title">
@@ -104,6 +100,11 @@
                                 </p>
                                 <p class="product-brand">Brand: <%= product.brand %>
                                 </p>
+
+                                <button class="btn btn-primary description"
+                                    title="<%= product.description %>">Description
+                                </button>
+
                                 <p class="product-price">Price: $<%= product.price %>
                                 </p>
                             </div>
@@ -128,12 +129,17 @@
                                 data-image="<%= product.image %>" data-quantity="<%= product.quantity %>"
                                 data-price="<%= product.price %>">Total: $<%= product.payment %>
                             </span>
+
+
                         </div>
+
+
                         <a class="btn btn-primary add-to-cart" href="/" role="button"
                             data-product-id="<%= product._id %>" data-title="<%= product.title %>"
                             data-category="<%= product.category %>" data-description="<%= product.description %>"
                             data-image="<%= product.image %>" data-price="<%= product.price %>"
                             data-payment="<%= product.payment %>">Add to cart</a>
+
                     </div>
                     <% }); %>
             </div>

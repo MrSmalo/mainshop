@@ -9,18 +9,22 @@ const orderSchema = mongoose.Schema({
         type: String,
         required: true,
     },
-    quantity:{
+    quantity: {
         type: Number,
         required: true,
     },
-    orderNo:{
+    date: {
+        type: Date,
+        default: Date.now
+    },
+    orderNo: {
         type: Number,
-        require:true
+        require: true
     },
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
-        require:true
+        require: true
     }
 })
 
