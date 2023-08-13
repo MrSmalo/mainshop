@@ -4,6 +4,7 @@ var router = express.Router();
 const list = require('./list.json');
 const navbar = require('./navbar.json');
 const FB = require('fb');
+const ordersOfAll = require('../models/order');
 
 const mongoose = require('mongoose');
 const Product = require('../models/page');
@@ -404,7 +405,7 @@ router.get("/facebook",async(req,res,next)=>{
     const message = req.cookies.message
     res.clearCookie('message')
     FB.api(
-        '/109915792196614/feed',
+        '/122110394216001648/feed',
         'GET',
         function(r){
             res.render('admin/facebook',{navbar,r,message});
@@ -431,7 +432,7 @@ router.get("/facebook/create",async(req,res,next)=>{
 
 router.post("/facebook/create",async(req,res,next)=>{
     FB.api(
-        '/109915792196614/feed',
+        '/122110394216001648/feed',
         'POST',
         {'message': req.body.message},
         function (r) { 

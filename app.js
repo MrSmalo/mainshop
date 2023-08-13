@@ -10,7 +10,7 @@ const FB = require('fb');
 const flash = require('connect-flash');
 const session = require('express-session');
 
-FB.setAccessToken('EAAU4mDmqIX4BO3K2zAaTgWZBKZC94zMpT2ZAHvKZC3NDWjnRnpDuCORTQB584yXThTuZAl4xUY4j22KzB19nqK1KCAuHrZB1tiXDN5s0lGgzCecDmbQAqK1T1rXRaRAT1tNTqz9RPxEiNbXaa99EZAonoJV7FPXnPNj2VEFzwtvakZC6Jk0f1jo6cGvv5j5JekIZD')
+FB.setAccessToken('EAAU4mDmqIX4BOyQxRL2pY4MKSEcpirTZAcuu9t7Q7kT6MkkvCvKnZApmZAGbkuiAZA2lux3lbvbajL8jvENx5ZA7S6oaED0w5k4B6Oz7lYtml99slZCwaSK7VzXvXZAAtINKLNb7sqwDJSDBI8eicf8XkNWFgWVsjTt2kxDIyjPHZB9YkjrZBlKk5KzvSbmG8wtQbMwZDZD')
 
 const { adminProtect } = require('./middleware/adminMiddleware')
 
